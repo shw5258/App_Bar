@@ -1,8 +1,10 @@
 package com.example.light.appbar;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,14 +29,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 //        getSupportActionBar().hide();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Define the listener
+        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when action item collapses
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                return true;  // Return true to expand action view
+            }
+        };
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        // Assign the listener to that action item
+        MenuItemCompat.setOnActionExpandListener(searchItem, expandListener);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
